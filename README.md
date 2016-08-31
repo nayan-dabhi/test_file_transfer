@@ -1,49 +1,96 @@
-# Cordova Hello World Plugin
+# cordova-plugin-screensize
 
-Simple plugin that returns your string prefixed with hello.
+![Platform](https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20osx%20%7C%20browser-lightgrey.svg)
 
-Greeting a user with "Hello, world" is something that could be done in JavaScript. This plugin provides a simple example demonstrating how Cordova plugins work.
+A cordova plugin to get the size of the device screen.
 
-## Using
-Clone the plugin
+## Installation
 
-    $ git clone https://github.com/don/cordova-plugin-hello.git
-
-Create a new Cordova Project
-
-    $ cordova create hello com.example.helloapp Hello
-    
-Install the plugin
-
-    $ cd hello
-    $ cordova plugin add ../cordova-plugin-hello
-    
-
-Edit `www/js/index.js` and add the following code inside `onDeviceReady`
-
-```js
-    var success = function(message) {
-        alert(message);
-    }
-
-    var failure = function() {
-        alert("Error calling Hello Plugin");
-    }
-
-    hello.greet("World", success, failure);
+```
+cordova plugin add cordova-plugin-screensize
 ```
 
-Install iOS or Android platform
+## Supported Platforms
 
-    cordova platform add ios
-    cordova platform add android
-    
-Run the code
+- Android
+- iOS
+- OSX
+- Browser
 
-    cordova run 
+## Usage
 
-## More Info
+```js
+document.addEventListener("deviceready", onDeviceReady, false);
 
-For more information on setting up Cordova see [the documentation](http://cordova.apache.org/docs/en/4.0.0/guide_cli_index.md.html#The%20Command-Line%20Interface)
+function onDeviceReady() {
+  window.plugins.screensize.get(successCallback, errorCallback);
+}
 
-For more info on plugins see the [Plugin Development Guide](http://cordova.apache.org/docs/en/4.0.0/guide_hybrid_plugins_index.md.html#Plugin%20Development%20Guide)
+function successCallback(result) {
+  console.log(result);
+}
+```
+
+The plugin returns a JSON object with the screen sizes.
+
+## Android Platform Quirks
+
+Return values:
+
+* `width` &lt;Number&gt; − screen width in pixels
+* `height` &lt;Number&gt; − screen height in pixels
+* `xdpi` &lt;Number&gt; − physical pixels per inch of the screen in the X dimension
+* `ydpi` &lt;Number&gt; − physical pixels per inch of the screen in the Y dimension
+* `diameter` &lt;Number&gt; − screen diameter in inches (rounded to two decimals)
+
+### Known Issues
+
+The correct device metrics setting is the manufacturer's responsibility. In a few cases the `xdpi` and `ydpi` values are wrong and the diameter calculation returns an incorrect number.
+
+Devices with wrong settings (known so far):
+
+- BLU Life XL (model `BLU LIFE XL`, calculated diameter 8.62" vs. real diameter 5.5")
+- Samsung Galaxy SIII CDMA (model `SPH-L710`, calculated diameter 9.17" vs. real diameter 4.8")
+- ZTE nubia Z7 Max (model `NX505J`, calculated diameter 13.77" vs. real diameter 5.5")
+
+## iOS Platform Quirks
+
+iOS has no public API for getting the device's PPI.
+
+The plugin returns the [rendered pixels](http://www.paintcodeapp.com/news/ultimate-guide-to-iphone-resolutions) of the screen.
+
+Return values:
+
+* `width` &lt;Number&gt; − rendered pixel width
+* `height` &lt;Number&gt; − rendered pixel height
+* `scale` &lt;Number&gt; − render scale (1× or 2× or 3×)
+
+## OSX Platform Quirks
+
+Return values:
+
+* `width` &lt;Number&gt; − screen width in pixel
+* `height` &lt;Number&gt; − screen height in pixel
+* `physicalWidth` &lt;Number&gt; − width of the display in millimeters
+* `physicalHeight` &lt;Number&gt; − height of the display in millimeters
+* `dpi` &lt;Number&gt; − physical pixels per inch of the display
+
+## Browser Platform Quirks
+
+The plugin returns the dimensions of the viewport. You can't get the real physical dimensions or the actual DPI of the browser ( [see](http://stackoverflow.com/a/21767407) ).
+
+Return values:
+
+* `width` &lt;Number&gt; − viewport width in pixels
+* `height` &lt;Number&gt; − viewport height in pixels
+
+## Author
+
+#### Peter Bakondy
+
+- https://github.com/pbakondy
+
+
+## LICENSE
+
+**cordova-plugin-screensize** is licensed under the MIT Open Source license. For more information, see the LICENSE file in this repository.
