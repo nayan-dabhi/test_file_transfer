@@ -32,18 +32,32 @@ public class ScreenSize extends CordovaPlugin {
       double he = (double)height / ydpi;
       double x = Math.pow(wi, 2);
       double y = Math.pow(he, 2);
-
       double screenInches = Math.round(Math.sqrt(x + y) * 100.0) / 100.0;
 
-      JSONObject result = new JSONObject();
+      String densityName = "";
 
+      if (density >= 4.0) {
+        densityName = "xxxhdpi";
+      } else if (density >= 3.0) {
+        densityName = "xxhdpi";
+      } else if (density >= 2.0) {
+        densityName = "xhdpi";
+      } else if (density >= 1.5) {
+        densityName = "hdpi";
+      } else if (density >= 1.0) {
+        densityName = "mdpi";
+      } else {
+        densityName = "ldpi";
+      }
+
+      JSONObject result = new JSONObject();
       try {
         result.put("width", width);
         result.put("height", height);
         result.put("diameter", screenInches);
         result.put("xdpi", xdpi);
         result.put("ydpi", ydpi);
-        result.put("dpi", dm.density);
+        result.put("density", densityName);
       } catch (JSONException e) {}
 
       callbackContext.success(result);
