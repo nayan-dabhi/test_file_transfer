@@ -36,15 +36,15 @@ public class ScreenSize extends CordovaPlugin {
 
       String densityName = "";
 
-      if (density >= 4.0) {
+      if (dm.density >= 4.0) {
         densityName = "xxxhdpi";
-      } else if (density >= 3.0) {
+      } else if (dm.density >= 3.0) {
         densityName = "xxhdpi";
-      } else if (density >= 2.0) {
+      } else if (dm.density >= 2.0) {
         densityName = "xhdpi";
-      } else if (density >= 1.5) {
+      } else if (dm.density >= 1.5) {
         densityName = "hdpi";
-      } else if (density >= 1.0) {
+      } else if (dm.density >= 1.0) {
         densityName = "mdpi";
       } else {
         densityName = "ldpi";
