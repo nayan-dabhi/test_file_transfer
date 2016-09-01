@@ -57,7 +57,8 @@ public class ScreenSize extends CordovaPlugin {
         result.put("diameter", screenInches);
         result.put("xdpi", xdpi);
         result.put("ydpi", ydpi);
-        result.put("density", densityName);
+        result.put("density_point", dm.density);
+        result.put("density_name", densityName);
       } catch (JSONException e) {}
 
       callbackContext.success(result);
